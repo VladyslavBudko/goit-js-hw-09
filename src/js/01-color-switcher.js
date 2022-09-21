@@ -16,24 +16,21 @@ const timer = {
     }
 
     this.isActive = true;
-    this.timerID = setInterval(() => {
-    //   console.log(event.target);
-      console.log(this.timerID);
+    startBtn.style.color = '#390d0d34';
+    stopBtn.style = null;
 
-    //   bodyEl.style.background = getRandomHexColor;
-      bodyEl.setAttribute('background-color', getRandomHexColor());
-      console.log(bodyEl);
+    this.timerID = setInterval(() => {
+      bodyEl.style.background = getRandomHexColor();
     }, 1000);
   },
 
   changeColorStop() {
     clearInterval(this.timerID);
     this.isActive = false;
-
-    // console.log(event.target);
-    console.log(this.timerID);
+    startBtn.style = null;
+    stopBtn.style.color = '#390d0d34';
   },
 };
 
-startBtn.addEventListener('click',() => timer.changeColor());
-stopBtn.addEventListener('click',() => timer.changeColorStop());
+startBtn.addEventListener('click', () => timer.changeColor());
+stopBtn.addEventListener('click', () => timer.changeColorStop());
