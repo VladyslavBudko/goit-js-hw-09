@@ -1,0 +1,2 @@
+const e=document.querySelector("[data-start]"),t=document.querySelector("[data-stop]");e.addEventListener("click",(function(c){e.classList.add("is-active"),t.classList.remove("is-active"),s=setInterval((()=>{console.log(c.target),console.log(s)}),1e3)})),t.addEventListener("click",(function(c){t.classList.add("is-active"),e.classList.remove("is-active"),clearInterval(s),console.log(c.target),console.log(s)}));let s=null;
+//# sourceMappingURL=01-color-switcher.eb27165c.js.map
