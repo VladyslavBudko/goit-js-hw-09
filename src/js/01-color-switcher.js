@@ -20,9 +20,9 @@ const timer = {
     //   console.log(event.target);
       console.log(this.timerID);
 
-      bodyEl.backgroundColor = getRandomHexColor;
-      // bodyEl.setAttribute('background-color', getRandomHexColor());
-    //   console.log(bodyEl);
+    //   bodyEl.style.background = getRandomHexColor;
+      bodyEl.setAttribute('background-color', getRandomHexColor());
+      console.log(bodyEl);
     }, 1000);
   },
 
