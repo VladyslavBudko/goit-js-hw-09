@@ -43,21 +43,33 @@ class Timer {
   constructor({ onTick }) {
     this.timerID = null;
     this.onTick = onTick;
+    this.isActive = false;
   }
 
   startTimer() {
-    setInterval(() => {
+    if (this.isActive) {
+      return;
+    }
+    this.isActive = true;
+    refs.startBtn.style.color = '#390d0d34';
+
+    this.intervalId = setInterval(() => {
       const currentTime = Date.now();
       const deltaTime = startTime - currentTime;
+
+      if (deltaTime < 1000) {
+        clearInterval(this.intervalId);
+        console.log('Распродажа началась!', startTime);
+        this.isActive = false;
+        refs.startBtn.style = null;
+      }
+
       const time = convertMs(deltaTime);
       this.onTick(time);
       console.log('time', time);
       console.log('deltaTime', deltaTime);
 
-      if (deltaTime === 0) {
-        console.log('Распродажа началась!', startTime);
-        return;
-      }
+    
     }, 1000);
   }
 }
