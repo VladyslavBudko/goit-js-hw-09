@@ -1,6 +1,7 @@
 import flatpickr from 'flatpickr';
 // Дополнительный импорт стилей
 import 'flatpickr/dist/flatpickr.min.css';
+import Notiflix from 'notiflix';
 
 const refs = {
   pickerEl: document.querySelector('#datetime-picker'),
@@ -9,7 +10,22 @@ const refs = {
   hoursEl: document.querySelector('[data-hours]'),
   minutesEl: document.querySelector('[data-minutes]'),
   secondsEl: document.querySelector('[data-seconds]'),
+  timerEl: document.querySelector('.timer'),
+  fieldsValueEl: document.querySelectorAll('.value'),
+  fieldsLabelEl: document.querySelectorAll('.label'),
 };
+
+refs.timerEl.style.display = 'flex';
+refs.timerEl.style.justifyContent = 'space-evenly';
+for (const fieldValueEl of refs.fieldsValueEl) {
+  fieldValueEl.style.display = 'flex';
+  fieldValueEl.style.flexDirection = 'column';
+  fieldValueEl.style.fontSize = '30px';
+  fieldValueEl.style.alignItems = 'center';
+}
+for (const fieldLabelEl of refs.fieldsLabelEl) {
+  fieldLabelEl.style.textTransform = 'uppercase';
+}
 
 let isActive = false;
 refs.startBtn.style.color = '#390d0d34';
@@ -22,15 +38,16 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates, dateStr) {
     startTime = selectedDates[0];
-    console.log(startTime);
-    console.log('Pаспродажа начнется:', dateStr);
     const date = new Date();
-    console.log(date);
 
     if (selectedDates[0] - date < 0) {
-      window.alert('Please choose a date in the future');
+      Notiflix.Notify.failure('Please choose a date in the future');
+      // window.alert('Please choose a date in the future');
       return;
     }
+
+    // console.log('Pаспродажа начнется:', dateStr);
+    Notiflix.Notify.success(`Pаспродажа начнется:, ${dateStr}`);
 
     refs.startBtn.style = null;
     isActive = true;
@@ -47,7 +64,7 @@ class Timer {
   }
 
   startTimer() {
-    if (this.isActive) {
+    if (this.isActive || startTime < Date.now()) {
       return;
     }
     this.isActive = true;
@@ -59,17 +76,14 @@ class Timer {
 
       if (deltaTime < 1000) {
         clearInterval(this.intervalId);
-        console.log('Распродажа началась!', startTime);
+        // console.log('Распродажа началась!', startTime);
+        Notiflix.Notify.success(`Распродажа началась!!!`);
         this.isActive = false;
         refs.startBtn.style = null;
       }
 
       const time = convertMs(deltaTime);
       this.onTick(time);
-      console.log('time', time);
-      console.log('deltaTime', deltaTime);
-
-    
     }, 1000);
   }
 }
@@ -96,7 +110,9 @@ function convertMs(ms) {
   // Remaining minutes
   const minutes = addLeadingZero(Math.floor(((ms % day) % hour) / minute));
   // Remaining seconds
-  const seconds = addLeadingZero(Math.floor((((ms % day) % hour) % minute) / second));
+  const seconds = addLeadingZero(
+    Math.floor((((ms % day) % hour) % minute) / second)
+  );
 
   return { days, hours, minutes, seconds };
 }
