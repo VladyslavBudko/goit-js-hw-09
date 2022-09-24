@@ -19,7 +19,7 @@ function start(evt) {
   let delay = Number(DELAY);
 
   for (let position = 1; position <= AMOUNT; position += 1) {
-    createPromise(position, delay)
+    createPromise({ position, delay })
       .then(({ position, delay }) =>
         Notiflix.Notify.success(
           `✅ Fulfilled promise ${position} in ${delay}ms`
@@ -33,7 +33,7 @@ function start(evt) {
   }
 }
 
-const createPromise = (position, delay) => {
+const createPromise = ({ position, delay }) => {
   return new Promise((resolve, reject) => {
     const shouldResolve = Math.random() > 0.3;
 
